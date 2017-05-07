@@ -1,1 +1,3 @@
-# PRM-project
+#PRM project for EECS 499
+
+
