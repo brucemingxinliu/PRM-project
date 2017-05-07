@@ -1,99 +1,18 @@
 PRM.m
 
 classdef (Sealed) PRM < handle & robotics.algs.internal.GridAccess & matlab.mixin.Copyable
-    %PRM Create a probabilistic roadmap path planner
-    %   The probabilistic roadmap path planner constructs a roadmap without
-    %   start or goal points. At the query stage, it finds
-    %   paths between specific, given start and goal points. If there is no
-    %   connectivity between the start and the goal point, it returns an
-    %   empty array. The roadmap is not constructed until either the method UPDATE,
-    %   FINDPATH or SHOW is invoked.
-    %
-    %   PLANNER = robotics.PRM creates an empty PRM object. A value must be assigned
-    %   to the Map property before using the object. The input to the Map
-    %   property is an object of type robotics.BinaryOccupancyGrid.
-    %
-    %   PLANNER = robotics.PRM(MAP) creates a PRM object with input, MAP,
-    %   assigned to the property Map. The default number of nodes will be
-    %   calculated based on the size of the MAP.
-    %
-    %   PLANNER = robotics.PRM(MAP, NUMNODES) creates a PRM object with MAP
-    %   assigned to the property Map and NUMNODES assigned to the property
-    %   NumNodes.
-    %
-    %   PRM properties:
-    %       Map                 - Map representing the workspace
-    %       NumNodes            - Maximum number of nodes in the roadmap
-    %       ConnectionDistance  - Maximum distance between two connected nodes
-    %
-    %   PRM methods:
-    %       update    - Create or update the roadmap
-    %       findpath  - Find a path between start and goal points
-    %       show      - Show the map, roadmap and path in a figure
-    %
-    %   Example:
-    %
-    %       % Create an empty probabilistic roadmap
-    %       planner = robotics.PRM
-    %
-    %       % Create a binary occupancy grid
-    %       map = robotics.BinaryOccupancyGrid(10,10);
-    %
-    %       % Assign the map object to the PRM
-    %       planner.Map = map;
-    %
-    %       % Find path between two points
-    %       waypoints = findpath(planner, [1 3], [8 6])
-    %
-    %       % Visualize the roadmap and path in a figure
-    %       show(planner)
-    %
-    %   See also robotics.BinaryOccupancyGrid, robotics.PurePursuit
     
-    %   Copyright 2014-2015 The MathWorks, Inc.
-    %
-    %   References:
-    %
-    %   [1] L.E. Kavraki, P. Svestka, J.-C. Latombe, M.H. Overmars,
-    %       "Probabilistic roadmaps for path planning in high-dimensional
-    %       configuration spaces," IEEE Transactions on Robotics and
-    %       Automation, vol. 12, no. 4, pp. 566-580, Aug 1996.
-    %   [2] P. Corke, Robotics, Vision & Control, Springer 2011.
-    
-    %   Copyright (C) 1993-2014, by Peter I. Corke
-    %
-    %   This file is part of The Robotics Toolbox for Matlab (RTB).
-    %
-    %   http://www.petercorke.com
-    %
-    %   Peter Corke 8/2009.
     
     properties (Dependent)
-        %Map The map representing the world
-        %   The MAP is an object of the type robotics.BinaryOccupancyGrid.
-        %   This property holds a copy of the Map assigned for constructing
-        %   the roadmap and Returns a copy of the Map used by the
-        %   probabilistic roadmap.
-        %
-        %   Default: Empty robotics.BinaryOccupancyGrid object
+
         Map
         
-        %NumNodes Maximum number of nodes in the roadmap
-        %   The number of nodes in the constructed roadmap will be to equal or
-        %   less than the NumNodes value. The chance of finding a path increases
-        %   with higher number of nodes. The higher number of nodes also increases
-        %   the computation time for the roadmap construction.
-        %
-        %   Default: 50
+
         NumNodes
     end
     
     properties
-        %ConnectionDistance Maximum distance between connected nodes
-        %   Nodes with distance above the ConnectionDistance will not be
-        %   connected in the roadmap.
-        %
-        %   Default: inf
+
         ConnectionDistance = inf;
     end
     
@@ -185,32 +104,7 @@ classdef (Sealed) PRM < handle & robotics.algs.internal.GridAccess & matlab.mixi
         end
         
         function update(obj)
-            %update Create or update the probabilistic roadmap
-            %   update(PRM) constructs a roadmap if called for the first
-            %   time after PRM object creation. Subsequent calls of update
-            %   re-creates the roadmap by re-sampling the Map. The update
-            %   function uses Map, NumNodes and ConnectionDistance
-            %   values to construct the new roadmap.
-            %
-            %   Example:
-            %       % Create a binary occupancy grid
-            %       map = robotics.BinaryOccupancyGrid(10,10);
-            %
-            %       % Create a probabilistic roadmap
-            %       prm = robotics.PRM;
-            %
-            %       % Assign the map to PRM
-            %       prm.Map = map;
-            %
-            %       % Construct the roadmap by calling update
-            %       update(prm);
-            %
-            %       % Visualize the constructed roadmap using show
-            %       show(prm);
-            %
-            %   See also robotics.PRM, findpath, show
             
-            % If Map property is empty, then throw an error
             if isempty(obj.InternalMap)
                 error(message('robotics:robotalgs:prm:EmptyMap'));
             end
