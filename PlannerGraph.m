@@ -2,82 +2,19 @@ PlannerGraph.m
 
 
 classdef PlannerGraph < handle & matlab.mixin.Copyable
-    %This class is for internal use only. It may be removed in the future.
-    
-    %PlannerGraph Graph class
-    %   G = PlannerGraph(DIM, METRIC) constructs a graph with given
-    %   dimension DIM. DIM must be a finite value that is greater or equal
-    %   to 2. METRIC can be 'euclidean' or 'se2'.
-    %
-    %   The purpose of this class is to create a graph and perform
-    %   computation over the graph. This class provides support for undirected
-    %   graph that are embedded in coordinate system. The graph also has
-    %   symmetric weight edges (A to B is same weight as B to A) and no loops
-    %   (edges from A to A). Nodes and edges are represented by labels.
-    %
-    %   PlannerGraph methods:
-    %       addNode              - Add a node to the graph
-    %       addEdge              - Add an edge(s) to the graph
-    %       setNodeData          - Set data for a given node
-    %       getNodeData          - Get data from a given node
-    %       nodeCoordinate       - Find coordinate of given node label
-    %       edgesFromNode        - Find edges given node
-    %       edgeWeight           - Get weight of given edge label
-    %       setEdgeWeight        - Set weight of given edge
-    %       componentFromNodes   - Label of component of a given node
-    %       closestNode          - Find closest node from given coordinate
-    %       distanceFromAllNodes - Distances from a given coordinate to all nodes
-    %       aStar                - Perform A* search algorithm
-    %
-    %   PlannerGraph properties:
-    %       NumNodes        - (Read-Only) Number of nodes in the graph
-    %       NumEdges        - (Read-Only) Number of edges in the graph
-    %       NumComponents   - (Read-Only) Number of components in the graph
-    %       EdgeList        - (Read-Only) List of node label pairs that correspond to each edges.
-    %       NodeList        - (Read-Only) List of coordinates of every nodes in the graph
-    %       Dimension       - (Read-Only) Dimension of graph
-    %
-    %   Example:
-    %
-    %       % Create a graph
-    %       g = robotics.algs.internal.PlannerGraph(2, 'euclidean');
-    %
-    %       % Add nodes
-    %       addNode(obj, [1, 1]);
-    %       addNode(obj, [2, 2]);
-    %
-    %       % Add an edge
-    %       addEdge(1, 2);
-    
-    %   Copyright 2014-2015 The MathWorks, Inc.
-    
-    %   Copyright (C) 1993-2014, by Peter I. Corke
-    %
-    %   This file is part of The Robotics Toolbox for Matlab (RTB).
-    %
-    %   http://www.petercorke.com
-    %
-    %   Peter Corke 8/2009.
+
     
     properties (SetAccess = private)
         %Dimension - Dimension of graph.
         Dimension
     end
     properties (Access = ?matlab.unittest.TestCase)
-        %AdjacencyMatrix Adjacency matrix for the graph
-        %   The row and column index refers to the respective node label
-        %   and the value in the matrix refers to the weight of the edge
-        %   connecting those two nodes.
+
         AdjacencyMatrix
     end
     
     properties (Access = private)
-        %Nodes List of coordinates of every nodes in the graph.
-        %   Nodes is a list of coordinates of pre-defined size. The nodes
-        %   that are not added yet are represented as NaN values. Each
-        %   column represents the coordinate of corresponding node label.
-        %   For example, if the node label is N, the coordinate C of the node
-        %   of graph G is C = G.Nodes(:,N).
+
         Nodes
         
         %CurrentLabel The latest node label of a node that was added
@@ -101,11 +38,7 @@ classdef PlannerGraph < handle & matlab.mixin.Copyable
         NumNodes;
         %NumEdges Number of edges in the graph.
         NumEdges;
-        
-        %EdgeList List of node label pairs that correspond to each edges.
-        %   Each column represents node label pairs of corresponding edge
-        %   label. For example, if edge label is E, the node label pair  NL
-        %   of graph G is NL = G.EdgeList(:,E).
+
         EdgeList
         
         %NodeList List of coordinates of every nodes in the graph.
