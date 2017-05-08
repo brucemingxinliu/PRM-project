@@ -12,7 +12,7 @@ qnew = [xnew ynew];
 
 
 
-col = checkForCollision(node1,node2);
+col = CheckForCollision(node1,node2);
 col =1;
 while (col)~=1
     xnew =  (10*rand(1));
